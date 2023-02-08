@@ -1,5 +1,44 @@
+import re
+import openai
+import time
+from tests import test_routes
+
+
+COMMANDS = {
+    'start': 'Gives information about the bot',
+    'help': 'Gives information about all of the available commands',
+    'ping': 'Measure the execution time to run test and send a message',
+    'caps your sentence': 'Converts your sentence to uppercase',
+    'ask your question': 'Ask your question to the bot powered by ChatGPT'
+}
+
+
+def is_command(string):
+    pattern = r"^\/.*$"
+    return bool(re.match(pattern, string))
+
+
+def get_answer(question):
+    completion = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=question,
+        max_tokens=1024,
+        n=1,
+        temperature=.1,
+        frequency_penalty=.1,
+        presence_penalty=.1
+    )
+    return completion.choices[0].text
+
+
+def get_running_time(start_time):
+    test_routes.test_index()
+    return time.time() - start_time
+
+
 def hello():
     return "Hello, World!"
+
 
 def content():
     return '''
