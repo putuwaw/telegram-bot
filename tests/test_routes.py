@@ -1,10 +1,16 @@
-from flask import Flask
-from handlers.routes import configure_routes
+from flask import Flask, render_template
+from modules import modules
 
 
 def test_index():
     app = Flask(__name__, template_folder="../templates")
-    configure_routes(app)
+
+    @app.route("/")
+    def index():
+        hello = modules.hello()
+        content = modules.content()
+        return render_template("index.html", hello=hello, content=content)
+
     app.testing = True
     client = app.test_client()
     response = client.get('/')
