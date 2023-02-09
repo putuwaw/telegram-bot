@@ -14,7 +14,7 @@ idna==3.4
 iniconfig==1.1.1
 itsdangerous==2.1.2
 Jinja2==3.1.2
-MarkupSafe==2.1.1
+MarkupSafe==2.1.2
 multidict==6.0.4
 openai==0.26.4
 packaging==21.3
