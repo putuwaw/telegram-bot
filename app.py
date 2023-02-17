@@ -2,6 +2,7 @@ import telebot
 import os
 import openai
 import time
+import requests
 from flask import Flask
 from modules import modules
 from handlers.routes import configure_routes
@@ -12,6 +13,7 @@ load_dotenv()
 TOKEN = os.getenv('TOKEN')
 URL = os.getenv('URL')
 OWNER = os.getenv('OWNER')
+SHORTEN_URL_ENDPOINT = os.getenv('SHORTEN_URL_ENDPOINT')
 openai.api_key = os.getenv('OPENAI')
 
 bot = telebot.TeleBot(token=TOKEN, threaded=False)
@@ -61,6 +63,33 @@ def command_ask(message):
         string = str(message.text)
         question = string.replace('/ask ', '')
         bot.reply_to(message, modules.get_answer(question))
+
+
+@bot.message_handler(commands=['short'])
+def command_team(message):
+    string = str(message.text).replace('/short ', '').split()
+    url = ""
+    custom = ""
+    if len(string) < 1:
+        bot.reply_to(message, "Too few arguments!")
+    elif len(string) > 2:
+        bot.reply_to(message, "Too many arguments!")
+    else:
+        url = string[0]
+        if len(string) == 2:
+            custom = string[1]
+        if not modules.is_valid_url(url):
+            bot.reply_to(message, "URL is not valid!")
+        elif not modules.is_valid_custom(custom) and custom != '':
+            bot.reply_to(message, "Custom URL is not valid!")
+        else:
+            r = requests.post(SHORTEN_URL_ENDPOINT, json={
+                'url': url,
+                'custom': custom
+            })
+            response = r.json()
+            result = response['status'] + "\n" + response['message']
+            bot.reply_to(message, result)
 
 
 @bot.message_handler(func=lambda message: modules.is_command(message.text))
