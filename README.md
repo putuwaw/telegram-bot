@@ -11,12 +11,13 @@ Telegram-Bot is a repository for my personal Telegram bot that I use to automate
 - [x] Uppercase a sentence
 - [x] Ask a question to the bot
 - [x] Measure running time of test cases
+- [x] Shorten long URLs and create custom short URLs.
 
 > **Note**: The bot is still under development and more features will be added in the future. Some commands may only available for specific users.
 
 ## Usage
 
-Try the bot by clicking [here](https://t.me/putuwaw_bot).
+Try the bot by clicking [here](https://shrtn-url.vercel.app/telegram-bot).
 
 ## License
 
