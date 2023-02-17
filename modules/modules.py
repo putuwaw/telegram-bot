@@ -9,7 +9,8 @@ COMMANDS = {
     'help': 'Gives information about all of the available commands',
     'ping': 'Measure the execution time to run test and send a message',
     'caps your sentence': 'Converts your sentence to uppercase',
-    'ask your question': 'Ask your question to the bot powered by ChatGPT'
+    'ask your question': 'Ask your question to the bot powered by ChatGPT',
+    'short URL customURL': 'Shorten your URL with optional custom URL'
 }
 
 
@@ -34,6 +35,23 @@ def get_answer(question):
 def get_running_time(start_time):
     test_routes.test_index()
     return time.time() - start_time
+
+
+def is_valid_url(url):
+    pattern = re.compile(
+        r'^(?:http|ftp)s?://'  # http:// or https://
+        # domain...
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
+        r'localhost|'  # localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+        r'(?::\d+)?'  # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    return re.match(pattern, url) is not None
+
+
+def is_valid_custom(custom):
+    pattern = r'^[\w-]+$'
+    return re.match(pattern, custom)
 
 
 def hello():
