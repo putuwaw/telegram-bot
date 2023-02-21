@@ -3,6 +3,7 @@ import os
 import openai
 import time
 import requests
+import random
 from flask import Flask
 from modules import modules
 from handlers.routes import configure_routes
@@ -90,6 +91,22 @@ def command_team(message):
             response = r.json()
             result = response['status'] + "\n" + response['message']
             bot.reply_to(message, result)
+
+
+@bot.message_handler(commands=['rand'])
+def command_random(message):
+    string = str(message.text)
+    question = string.replace('/rand ', '').split()
+    idx = random.randint(0, len(question) - 1)
+    bot.reply_to(message, question[idx])
+
+
+@bot.message_handler(commands=['team'])
+def command_team(message):
+    string = str(message.text).replace('/team ', '').split()
+    n_team = int(string[0])
+    result = modules.get_random_team(n_team, string[1:])
+    bot.reply_to(message, result)
 
 
 @bot.message_handler(func=lambda message: modules.is_command(message.text))
