@@ -1,6 +1,7 @@
 import re
 import openai
 import time
+import random
 from tests import test_routes
 
 
@@ -10,7 +11,9 @@ COMMANDS = {
     'ping': 'Measure the execution time to run test and send a message',
     'caps your sentence': 'Converts your sentence to uppercase',
     'ask your question': 'Ask your question to the bot powered by ChatGPT',
-    'short URL customURL': 'Shorten your URL with optional custom URL'
+    'short URL customURL': 'Shorten your URL with optional custom URL',
+    'rand option1 option2': 'Randomly choose one of the options',
+    'team nteam member1 member2': 'Randomly assign members to teams',
 }
 
 
@@ -52,6 +55,30 @@ def is_valid_url(url):
 def is_valid_custom(custom):
     pattern = r'^[\w-]+$'
     return re.match(pattern, custom)
+
+
+def get_random_team(n_team, member_list):
+    result = ''
+    if n_team > len(member_list):
+        result = 'Too many teams!'
+    elif n_team < 1:
+        result = 'Too few teams!'
+    else:
+        n_plus = len(member_list) % n_team
+        length = len(member_list)
+        result = ''
+        for i in range(n_team):
+            result += 'Team {}:\n'.format(i+1)
+            if i < n_plus:
+                result += member_list.pop(
+                    random.randint(0,
+                                   len(member_list) - 1)) + '\n'
+            for j in range(length // n_team):
+                result += member_list.pop(
+                    random.randint(0,
+                                   len(member_list) - 1)) + '\n'
+            result += '\n'
+    return result
 
 
 def hello():
