@@ -104,9 +104,12 @@ def command_random(message):
 @bot.message_handler(commands=['team'])
 def command_team(message):
     string = str(message.text).replace('/team ', '').split()
-    n_team = int(string[0])
-    result = modules.get_random_team(n_team, string[1:])
-    bot.reply_to(message, result)
+    if string[0].isnumeric():
+        n_team = int(string[0])
+        result = modules.get_random_team(n_team, string[1:])
+        bot.reply_to(message, result)
+    else:
+        bot.reply_to(message, "First argument must be a number!")
 
 
 @bot.message_handler(func=lambda message: modules.is_command(message.text))
