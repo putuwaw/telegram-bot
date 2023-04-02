@@ -112,6 +112,21 @@ def command_team(message):
         bot.reply_to(message, "First argument must be a number!")
 
 
+@bot.message_handler(commands=['stats'])
+def command_stats(message):
+    if message.chat.id != int(OWNER):
+        bot.reply_to(message, "Sorry you are not allowed to use this command!")
+    else:
+        string = str(message.text).replace('/stats ', '').split()
+        if len(string) < 2:
+            bot.reply_to(message, "Too few arguments!")
+        elif len(string) > 2:
+            bot.reply_to(message, "Too many arguments!")
+        else:
+            response = modules.get_github_stats(string[0], string[1])
+            bot.reply_to(message, response)
+
+
 @bot.message_handler(func=lambda message: modules.is_command(message.text))
 def command_unknown(message):
     command = str(message.text).split()[0]
