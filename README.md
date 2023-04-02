@@ -13,6 +13,7 @@ Telegram-Bot is a repository for my personal Telegram bot that I use to automate
 - [x] Measure running time of test cases
 - [x] Shorten long URLs and create custom short URLs.
 - [x] Random team generator and random picker.
+- [x] Get GitHub repository statistics.
 
 > **Note**: The bot is still under development and more features will be added in the future. Some commands may only available for specific users.
 
