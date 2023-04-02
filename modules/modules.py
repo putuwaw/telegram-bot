@@ -2,8 +2,9 @@ import re
 import openai
 import time
 import random
+import os
+import requests
 from tests import test_routes
-
 
 COMMANDS = {
     'start': 'Gives information about the bot',
@@ -79,6 +80,39 @@ def get_random_team(n_team, member_list):
                                    len(member_list) - 1)) + '\n'
             result += '\n'
     return result
+
+
+def get_github_stats(username, repo):
+    API_BASE = f'https://api.github.com/repos/{username}/{repo}'
+    GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+    RESULT = ''
+    DATA_DICT = {'Name': 'name', 'Watchers': 'watchers_count', 'Forks': 'forks_count',
+                 'Stars': 'stargazers_count', 'Issues': 'open_issues_count', 'Language': 'language'}
+    try:
+        response = requests.get(
+            API_BASE,
+            headers={
+                'Accept': 'application/vnd.github+json',
+                'Authorization': 'Bearer {}'.format(GITHUB_TOKEN),
+                'X-GitHub-Api-Version': '2022-11-28'
+            }
+        )
+        r = response.json()
+        for key, value in DATA_DICT.items():
+            RESULT = RESULT + f"{key}: {r[value]}\n"
+        commit = re.search('\d+$', requests.get(f'{API_BASE}/commits?per_page=1'
+                                                ).links['last']['url']).group()
+        first_commit = requests.get(
+            f'{API_BASE}/commits?per_page=1&page={commit}')
+
+        response = first_commit.json()
+        first_commit_date = str(response[0]['commit']['author']['date']).replace(
+            'T', ' ').replace('Z', '')
+        RESULT += f"Total commit: {commit}\n"
+        RESULT += f"First commit: {first_commit_date}"
+        return RESULT
+    except:
+        return 'Username or repository not found!'
 
 
 def hello():
