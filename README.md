@@ -21,6 +21,10 @@ Telegram-Bot is a repository for my personal Telegram bot that I use to automate
 
 Try the bot by clicking [here](https://shrtn-url.vercel.app/telegram-bot).
 
+## Contributing 🤝
+
+Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) first
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
