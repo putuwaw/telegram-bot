@@ -15,6 +15,7 @@ COMMANDS = {
     'short URL customURL': 'Shorten your URL with optional custom URL',
     'rand option1 option2': 'Randomly choose one of the options',
     'team nteam member1 member2': 'Randomly assign members to teams',
+    'stats': 'Get statistics of a GitHub repository',
 }
 
 
@@ -24,16 +25,19 @@ def is_command(string):
 
 
 def get_answer(question):
-    completion = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=question,
-        max_tokens=1024,
-        n=1,
-        temperature=.1,
-        frequency_penalty=.1,
-        presence_penalty=.1
-    )
-    return completion.choices[0].text
+    try:
+        completion = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=question,
+            max_tokens=1024,
+            n=1,
+            temperature=.1,
+            frequency_penalty=.1,
+            presence_penalty=.1
+        )
+        return completion.choices[0].text
+    except:
+        return "Error, sorry something went wrong!"
 
 
 def get_running_time(start_time):
