@@ -1,10 +1,12 @@
 import re
-import openai
 import time
 import random
 import os
 import requests
+from dotenv import load_dotenv
 from tests import test_routes
+
+load_dotenv()
 
 COMMANDS = {
     'start': 'Gives information about the bot',
@@ -26,16 +28,12 @@ def is_command(string):
 
 def get_answer(question):
     try:
-        completion = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=question,
-            max_tokens=1024,
-            n=1,
-            temperature=.1,
-            frequency_penalty=.1,
-            presence_penalty=.1
-        )
-        return completion.choices[0].text
+        API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-xxl"
+        TOKEN = os.getenv('HF_TOKEN')
+        headers = {"Authorization": "Bearer " + TOKEN}
+        response = requests.post(API_URL, headers=headers, json={"inputs": question})
+        result = response.json()
+        return result[0]['generated_text']
     except:
         return "Error, sorry something went wrong!"
 
@@ -45,6 +43,8 @@ def get_running_time(start_time):
     return time.time() - start_time
 
 
+# using djago validators
+# https://github.com/django/django/blob/stable/1.3.x/django/core/validators.py#L45
 def is_valid_url(url):
     pattern = re.compile(
         r'^(?:http|ftp)s?://'  # http:// or https://
