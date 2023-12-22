@@ -1,6 +1,5 @@
 import telebot
 import os
-import openai
 import time
 import requests
 import random
