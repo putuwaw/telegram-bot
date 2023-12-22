@@ -14,7 +14,6 @@ TOKEN = os.getenv('TOKEN')
 URL = os.getenv('URL')
 OWNER = os.getenv('OWNER')
 SHORTEN_URL_ENDPOINT = os.getenv('SHORTEN_URL_ENDPOINT')
-openai.api_key = os.getenv('OPENAI')
 
 bot = telebot.TeleBot(token=TOKEN, threaded=False)
 app = Flask(__name__)
